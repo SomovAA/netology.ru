@@ -1,2 +1,5 @@
-# netology.ru
-Homeworks for netology.ru
+# Домашние задания по курсу «DevOps и системное администрирование» 
+
+## Модуль 1. Введение в DevOps
+
+1.1. [x] [Введение в DevOps](01-intro-01/README.md)
