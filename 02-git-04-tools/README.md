@@ -9,7 +9,6 @@
     git log --pretty=format:"%H %s" aefea -1
     git show -q --pretty=oneline aefea
     git show -q --pretty=format:"%H %s" aefea
-
 2. Какому тегу соответствует коммит `85024d3`?
 
 
@@ -21,14 +20,15 @@
 3. Сколько родителей у коммита `b8d720`? Напишите их хеши.
 
 
-    4703cb6c1c7a00137142da867588a5752c54fa6a
+    56cd7859e05c36c06b56d013b55a252d0bb7e158
+    9ea88f22fc6269854151c571162c5bcf958bee2b
 
-    git show 85024d3^
-    git show 85024d3^1
-    git show 85024d3~
-    git show 85024d3~1
-
-    Чтобы убедиться, что второго родителя нет git show 85024d3^2
+    git show b8d720^
+    git show b8d720^1
+    git show b8d720~
+    git show b8d720~1
+    git show b8d720^2
+    git show b8d720~2
 4. Перечислите хеши и комментарии всех коммитов которые были сделаны между тегами  v0.12.23 и v0.12.24.
 
     
@@ -45,5 +45,36 @@
     git log --oneline v0.12.23..v0.12.24 --skip=1
 5. Найдите коммит в котором была создана функция `func providerSource`, ее определение в коде выглядит 
 так `func providerSource(...)` (вместо троеточего перечислены аргументы).
+
+
+    8c928e835
+
+    git log --pretty=format:'%h' --reverse -S 'func providerSource' | head -1
+
 6. Найдите все коммиты в которых была изменена функция `globalPluginDirs`.
+
+
+    8364383c3
+    Эта команда показывает один коммит
+    git log --pretty=format:'%h' -S 'func globalPluginDirs'
+
+    78b122055
+    52dbf9483
+    41ab0aef7
+    66ebff90c
+    8364383c3
+    
+    А эта множество
+    По отдельности
+    git grep --name-only 'func globalPluginDirs'
+    git log --no-patch --pretty=format:"%h" -L ":func globalPluginDirs:plugins.go"
+
+    Автоматизировал
+    file=$(git grep --name-only 'func globalPluginDirs') && git log --pretty=format:"%h" --no-patch -L ":func globalPluginDirs:$file"
+
 7. Кто автор функции `synchronizedWriters`?
+
+
+    Martin Atkins
+
+    commit=$(git log --pretty=format:'%H' --reverse  -S 'synchronizedWriters' | head -1) && git show $commit --pretty=format:'%an' -q
