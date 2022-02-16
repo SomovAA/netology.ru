@@ -30,6 +30,19 @@
 
     Чтобы убедиться, что второго родителя нет git show 85024d3^2
 4. Перечислите хеши и комментарии всех коммитов которые были сделаны между тегами  v0.12.23 и v0.12.24.
+
+    
+    b14b74c49 [Website] vmc provider links
+    3f235065b Update CHANGELOG.md
+    6ae64e247 registry: Fix panic when server is unreachable
+    5c619ca1b website: Remove links to the getting started guide's old location
+    06275647e Update CHANGELOG.md
+    d5f9411f5 command: Fix bug when using terraform login on Windows
+    4b6d06cc5 Update CHANGELOG.md
+    dd01a3507 Update CHANGELOG.md
+    225466bc3 Cleanup after v0.12.23 release    
+
+    git log --oneline v0.12.23..v0.12.24 --skip=1
 5. Найдите коммит в котором была создана функция `func providerSource`, ее определение в коде выглядит 
 так `func providerSource(...)` (вместо троеточего перечислены аргументы).
 6. Найдите все коммиты в которых была изменена функция `globalPluginDirs`.
