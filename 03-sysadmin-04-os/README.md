@@ -18,12 +18,13 @@ ls -la /usr/bin/ | grep node_exporter
 lrwxrwxrwx  1 root   root          50 Mar 14 12:17 node_exporter -> /opt/node_exporter-1.3.1.linux-amd64/node_exporter
 ```
 
-Создадим файл с envs для сервиса
+Создадим файл с env для сервиса, и с параметром, который будем передавать при запуске приложения
 ```
 mkdir /etc/opt/node_exporter-1.3.1.linux-amd64
 nano /etc/opt/node_exporter-1.3.1.linux-amd64/node_exporter
 cat /etc/opt/node_exporter-1.3.1.linux-amd64/node_exporter
 NODE_EXPORTER_VAR=value
+NODE_EXPORTER_PARAMS="--web.listen-address=\":9100\""
 ```
 
 Создадим конфигурационный файл для сервиса
@@ -34,7 +35,7 @@ cat /etc/systemd/system/node_exporter.service
 Description=Node Exporter
 
 [Service]
-ExecStart=/opt/node_exporter-1.3.1.linux-amd64/node_exporter
+ExecStart=/opt/node_exporter-1.3.1.linux-amd64/node_exporter $NODE_EXPORTER_PARAMS
 EnvironmentFile=/etc/opt/node_exporter-1.3.1.linux-amd64/node_exporter
 
 [Install]
@@ -80,7 +81,7 @@ root        1423  0.0  1.1 715964 11488 ?        Ssl  12:39   0:00 /opt/node_exp
 vagrant     1488  0.0  0.0   6432   736 pts/2    S+   12:44   0:00 grep --color=auto node_exporter
 
 cat /proc/1423/environ
-LANG=en_US.UTF-8PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/binINVOCATION_ID=8c55427a34254463b676c7019116b813JOURNAL_STREAM=9:33137NODE_EXPORTER_VAR=value
+LANG=en_US.UTF-8PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/binINVOCATION_ID=8c55427a34254463b676c7019116b813JOURNAL_STREAM=9:33137NODE_EXPORTER_VAR=valueNODE_EXPORTER_PARAMS=--web.listen-address=":9100"
 ```
 
 2. Ознакомьтесь с опциями node_exporter и выводом `/metrics` по-умолчанию. Приведите несколько опций, которые вы бы выбрали для базового мониторинга хоста по CPU, памяти, диску и сети.
