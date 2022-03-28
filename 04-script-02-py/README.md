@@ -131,13 +131,13 @@ while True:
         ip = socket.gethostbyname(domain)
 
         if len(ips) == 0:
-            ips.append(ip)
             print(f"{domain} - {ip}")
+            ips.append(ip)
             continue
 
         if ips[-1] != ip:
-            ips.append(ip)
             print(f"[ERROR] {domain} IP mismatch: {ips[-1]} {ip}")
+            ips.append(ip)
             continue
 
         print(f"{domain} - {ip}")
@@ -147,20 +147,20 @@ while True:
 ### Вывод скрипта при запуске при тестировании:
 ```
 drive.google.com - 142.251.1.194
-mail.google.com - 209.85.233.83
-google.com - 74.125.205.138
+mail.google.com - 74.125.131.83
+google.com - 74.125.205.101
 drive.google.com - 142.251.1.194
-mail.google.com - 209.85.233.83
-[ERROR] google.com IP mismatch: 74.125.205.139 74.125.205.139
+[ERROR] mail.google.com IP mismatch: 74.125.131.83 74.125.131.18
+[ERROR] google.com IP mismatch: 74.125.205.101 74.125.205.100
 drive.google.com - 142.251.1.194
-mail.google.com - 209.85.233.83
-google.com - 74.125.205.139
+mail.google.com - 74.125.131.18
+google.com - 74.125.205.100
 drive.google.com - 142.251.1.194
-mail.google.com - 209.85.233.83
-google.com - 74.125.205.139
+mail.google.com - 74.125.131.18
+google.com - 74.125.205.100
 drive.google.com - 142.251.1.194
-mail.google.com - 209.85.233.83
-google.com - 74.125.205.139
+mail.google.com - 74.125.131.18
+google.com - 74.125.205.100
 ```
 
 ## Дополнительное задание (со звездочкой*) - необязательно к выполнению
