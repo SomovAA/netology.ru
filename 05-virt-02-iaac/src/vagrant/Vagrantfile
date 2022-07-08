@@ -1,0 +1,20 @@
+Vagrant.configure("2") do |config|
+  config.vm.synced_folder ".", "/vagrant", disabled: false
+  config.vm.box = "bento/ubuntu-20.04"
+  config.vm.hostname = "server1.netology"
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
+    v.cpus = 2
+    v.name = "server1.netology"
+  end
+  config.vm.network "forwarded_port", guest: 22, host: 20011
+  config.vm.network "private_network", ip: "192.168.56.11"
+#  config.vm.network "private_network", type: "dhcp"
+#  config.vm.network "private_network", ip: "192.168.56.11"
+  config.vm.provision "ansible" do |setup|
+    setup.inventory_path = "../ansible/inventory"
+    setup.playbook = "../ansible/provision.yml"
+    setup.become = true
+    setup.extra_vars = { ansible_user: 'vagrant' }
+  end
+end
