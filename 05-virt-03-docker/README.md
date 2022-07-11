@@ -122,13 +122,65 @@ event collaboration. Но она для песочницы развернута,
 ## Задача 3
 
 - Запустите первый контейнер из образа ***centos*** c любым тэгом в фоновом режиме, подключив папку ```/data``` из текущей рабочей директории на хостовой машине в ```/data``` контейнера;
+
+```
+docker run -d -it -v /data:/data centos:7 bash
+```
 - Запустите второй контейнер из образа ***debian*** в фоновом режиме, подключив папку ```/data``` из текущей рабочей директории на хостовой машине в ```/data``` контейнера;
+
+```
+docker run -d -it -v /data:/data debian:11.3 bash
+```
 - Подключитесь к первому контейнеру с помощью ```docker exec``` и создайте текстовый файл любого содержания в ```/data```;
+
+```
+docker ps
+CONTAINER ID   IMAGE         COMMAND   CREATED          STATUS          PORTS     NAMES
+0e639f57a1e4   debian:11.3   "bash"    26 seconds ago   Up 25 seconds             pedantic_kapitsa
+117e2027cbd5   centos:7      "bash"    4 minutes ago    Up 4 minutes              quizzical_banzai
+```
+
+```
+docker exec -it quizzical_banzai bash
+cd data
+echo test > test
+```
 - Добавьте еще один файл в папку ```/data``` на хостовой машине;
+
+```
+somov:/data$ sudo nano test2
+somov:/data$ cat test2
+test2
+```
 - Подключитесь во второй контейнер и отобразите листинг и содержание файлов в ```/data``` контейнера.
+
+```
+somov:~/netology.ru$ docker exec -it pedantic_kapitsa bash
+root@0e639f57a1e4:/# cd data
+root@0e639f57a1e4:/data# ls
+test  test2
+
+cat test
+test
+
+cat test2
+test2
+```
 
 ## Задача 4 (*)
 
 Воспроизвести практическую часть лекции самостоятельно.
 
 Соберите Docker образ с Ansible, загрузите на Docker Hub и пришлите ссылку вместе с остальными ответами к задачам.
+
+```
+docker build -t hitenok/ansible_fork:0.0.1 .
+
+docker images | grep hitenok
+hitenok/ansible_fork                                                               0.0.1                          ce064ab45b76   About a minute ago   246MB
+hitenok/nginx_fork                                                                 0.0.1                          04b58c19425d   43 hours ago         23.5MB
+
+docker push hitenok/ansible_fork:0.0.1
+```
+
+https://hub.docker.com/r/hitenok/ansible_fork
