@@ -63,3 +63,5 @@
 6.1. [x] [Типы и структура СУБД](06-db-01-basics/README.md)
 
 6.2. [x] [SQL](06-db-02-sql/README.md)
+
+6.3. [x] [MySQL](06-db-03-mysql/README.md)
