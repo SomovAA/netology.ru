@@ -65,3 +65,5 @@
 6.2. [x] [SQL](06-db-02-sql/README.md)
 
 6.3. [x] [MySQL](06-db-03-mysql/README.md)
+
+6.4. [x] [PostgreSQL](06-db-04-postgresql/README.md)
