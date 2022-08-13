@@ -67,3 +67,5 @@
 6.3. [x] [MySQL](06-db-03-mysql/README.md)
 
 6.4. [x] [PostgreSQL](06-db-04-postgresql/README.md)
+
+6.5. [x] [Elasticsearch](06-db-05-elasticsearch/README.md)
