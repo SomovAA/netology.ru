@@ -69,3 +69,5 @@
 6.4. [x] [PostgreSQL](06-db-04-postgresql/README.md)
 
 6.5. [x] [Elasticsearch](06-db-05-elasticsearch/README.md)
+
+6.6. [x] [Troubleshooting](06-db-06-troobleshooting/README.md)
