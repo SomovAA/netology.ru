@@ -71,3 +71,7 @@
 6.5. [x] [Elasticsearch](06-db-05-elasticsearch/README.md)
 
 6.6. [x] [Troubleshooting](06-db-06-troobleshooting/README.md)
+
+## Блок 7. Облачная инфраструктура. Terraform
+
+7.1. [x] [Конфигурация как код](07-terraform-01-intro/README.md)
