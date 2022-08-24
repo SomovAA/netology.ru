@@ -77,3 +77,5 @@
 7.1. [x] [Конфигурация как код](07-terraform-01-intro/README.md)
 
 7.2. [x] [Облачные провайдеры и синтаксис Терраформ](07-terraform-02-syntax/README.md)
+
+7.3. [x] [Основы и принцип работы Терраформ](07-terraform-03-basic/README.md)
