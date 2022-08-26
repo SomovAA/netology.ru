@@ -81,3 +81,5 @@
 7.3. [x] [Основы и принцип работы Терраформ](07-terraform-03-basic/README.md)
 
 7.4. [x] [Средства командной работы над инфраструктурой](07-terraform-04-teamwork/README.md)
+
+7.5. [x] [Введение в Golang](07-terraform-05-golang/README.md)
