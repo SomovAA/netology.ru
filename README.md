@@ -72,6 +72,10 @@
 
 6.6. [x] [Troubleshooting](06-db-06-troobleshooting/README.md)
 
+## Дополнительные материалы
+
+1. [x] [Модуль 6. Администрирование баз данных](https://github.com/netology-code/virt-homeworks/tree/master/additional)
+
 ## Блок 7. Облачная инфраструктура. Terraform
 
 7.1. [x] [Конфигурация как код](07-terraform-01-intro/README.md)
@@ -83,3 +87,5 @@
 7.4. [x] [Средства командной работы над инфраструктурой](07-terraform-04-teamwork/README.md)
 
 7.5. [x] [Введение в Golang](07-terraform-05-golang/README.md)
+
+7.6. [x] [Написание собственных провайдеров для Terraform](07-terraform-06-providers/README.md)
