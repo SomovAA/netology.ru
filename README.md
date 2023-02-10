@@ -95,3 +95,5 @@
 ## Блок 8. Система управления конфигурациями
 
 8.1. [x] [Введение в Ansible](08-ansible-01-base/README.md)
+
+8.2. [x] [Работа с Playbook](08-ansible-02-playbook/README.md)
