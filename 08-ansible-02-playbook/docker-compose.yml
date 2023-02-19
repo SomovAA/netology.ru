@@ -4,9 +4,11 @@ services:
   clickhouse-01:
     image: pycontribs/centos:7
     container_name: clickhouse-01
-    command: sleep 600000000
+    privileged: true
+    entrypoint: [ "/usr/sbin/init" ]
 
   vector-01:
     image: pycontribs/centos:7
     container_name: vector-01
-    command: sleep 600000000
+    privileged: true
+    entrypoint: [ "/usr/sbin/init" ]

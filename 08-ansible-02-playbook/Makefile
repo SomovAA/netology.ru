@@ -7,11 +7,14 @@ docker-down:
 docker-down-clear:
 	docker-compose down --volume
 
-docker-exec-clickhouse-01:
-	docker exec -it clickhouse-01 ls
+docker-exec-clickhouse-01-check-service:
+	docker exec -it clickhouse-01 sh -c 'systemctl status clickhouse-server'
 
-docker-exec-vector-01:
-	docker exec -it vector-01 ls
+docker-exec-clickhouse-client-check:
+	docker exec -it clickhouse-01 sh -c 'clickhouse-client -h 127.0.0.1'
+
+docker-exec-vector-01-status-service:
+	docker exec -it vector-01 sh -c 'systemctl status vector'
 
 ansible-playbook:
 	ansible-playbook -i ./playbook/inventory/prod.yml ./playbook/site.yml

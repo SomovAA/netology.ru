@@ -1,80 +1,80 @@
 ---
-- name: Install Clickhouse
-  hosts: clickhouse
-  handlers:
-    - name: Start clickhouse service
-      become: true
-      ansible.builtin.service:
-        name: clickhouse-server
-        state: restarted
-  tasks:
-    - block:
-        - name: Get clickhouse distrib
-          ansible.builtin.get_url:
+- name: Install Vector # Наименование play-я
+  hosts: vector # На каких хостах выполнять
+  tasks: # Список задач
+    - name: Create a directory # Наименование задачи
+      ansible.builtin.file: # Использую модуль file для создания директории с необходимыми правами
+        path: "{{ vector_dir }}" # Путь до директории, параметры лежат в group_vars/vector/vars.yml
+        state: directory # Указываю тип
+        mode: '0755' # Указываю права
+      check_mode: false
+      tags: # Тэги
+        - vector # Название тега
+    - name: Download # Наименование задачи
+      ansible.builtin.get_url: # Использую модуль get_url для скачивания установочного файла
+        url: "https://packages.timber.io/vector/0.27.0/vector-0.27.0-1.{{ vector_arch }}.rpm" # Откуда скачиваю
+        dest: "{{ vector_dir }}/vector-0.27.0-1.{{ vector_arch }}.rpm" # Куда складываю локально
+      check_mode: false
+      tags: # Тэги
+        - vector # Название тега
+    - name: Install package # Наименование задачи
+      become: true # Повышаем привилегию для задачи
+      ansible.builtin.yum: # Использую модуль yum, менеджер пакетов
+        name:
+          - "{{ vector_dir }}/vector-0.27.0-1.{{ vector_arch }}.rpm" # Устанавливаю Vector из скаченного ранее файла
+      tags: # Тэги
+        - vector # Название тега
+    - name: Start vector service # Наименование задачи
+      become: true # Повышаем привилегию для задачи
+      ansible.builtin.systemd: # Использую модуль systemd для запуска сервиса vector
+        name: vector # Имя сервиса
+        state: started # Запуск сервиса
+        daemon_reload: true # Перезагрузка конфигурации диспетчера systemd, иначе он не увидит сервиса vector
+      check_mode: false
+      ignore_errors: "{{ ansible_check_mode }}" # модуль systemd не обращает внимания на check_mode, есть специальная переменная ansible_check_mode, решающая проблему
+      tags: # Тэги
+        - vector # Название тега
+- name: Install Clickhouse # Наименование play-я
+  hosts: clickhouse # На каких хостах выполнять
+  tasks: # Список задач
+    - block: # Используем конструкцию block для группировки задач
+        - name: Get clickhouse distrib # Наименование задачи
+          ansible.builtin.get_url: # Использую модуль get_url для скачивания установочного файла
             url: "https://packages.clickhouse.com/rpm/stable/{{ item }}-{{ clickhouse_version }}.noarch.rpm"
             dest: "./{{ item }}-{{ clickhouse_version }}.rpm"
           with_items: "{{ clickhouse_packages }}"
-      rescue:
-        - name: Get clickhouse distrib
-          ansible.builtin.get_url:
+          check_mode: false
+      rescue: # Если одна из задач выше провалилась, то выполняется эта конструкция
+        - name: Get clickhouse distrib # Наименование задачи
+          ansible.builtin.get_url: # Использую модуль get_url для скачивания установочного файла
             url: "https://packages.clickhouse.com/rpm/stable/clickhouse-common-static-{{ clickhouse_version }}.x86_64.rpm"
             dest: "./clickhouse-common-static-{{ clickhouse_version }}.rpm"
-    - name: Install clickhouse packages
-      become: true
-      ansible.builtin.yum:
+          check_mode: false
+      tags: # Тэги
+        - clickhouse # Название тега
+    - name: Install clickhouse packages # Наименование задачи
+      become: true # Повышаем привилегию для задачи
+      ansible.builtin.yum: # Использую модуль yum, менеджер пакетов
         name:
           - clickhouse-common-static-{{ clickhouse_version }}.rpm
           - clickhouse-client-{{ clickhouse_version }}.rpm
           - clickhouse-server-{{ clickhouse_version }}.rpm
-      notify: Start clickhouse service
-    - name: Flush handlers
-      meta: flush_handlers
-    - name: Create database
-      ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
-      register: create_db
-      failed_when: create_db.rc != 0 and create_db.rc !=82
-      changed_when: create_db.rc == 0
-- name: Install Vector # Наименование play-я
-  hosts: vector # На каких хостах выполнять
-  handlers: # Обработчик событий, которые можно вызывать в задачах
-    - name: Restart Vector service # Имя для handler
-      become: true
-      ansible.builtin.service: # вызов модуля для работы с сервисами
-        name: vector # Имя сервиса
-        state: restarted # ожидаемое состояние
-  tasks: # Список задач
-    - name: Get version # Имя задачи
-      ansible.builtin.command: vector --version # действия
-      register: is_installed # Регистрация результата в переменную is_installed
-      ignore_errors: yes # Игнорирование ошибок, чтобы следующие задачи выполнялись, чтобы не было остановки play-я
       tags: # Тэги
-        - vector # Название тега
-    - name: Print version
-      ansible.builtin.debug: # Модуль дебага
-        msg: Vector already installed # Вывожу на экран сообщение
-      when: # Условия при которых срабатывает эта задача
-        - is_installed is succeeded # Если vector был установлен
-      tags:
-        - vector
-    - block: # группировка задач
-        - name: Create a directory
-          ansible.builtin.file: # Использую модуль file для создания директории с необходимыми правами
-            path: "{{ ansible_user_dir }}" # Путь до директории, параметры лежат в group_vars/vector/vars.yml
-            state: directory # Указываю тип
-            mode: '0755' # Указываю права
-            recurse: yes # Указываю рекурсию прав для вложенных директорий
-        - name: Download
-          ansible.builtin.get_url: # Использую модуль get_url для скачивания установочного файла
-            url: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-1.x86_64.rpm" # Откуда скачиваю
-            dest: "{{ ansible_user_dir }}/vector-{{ vector_version }}-1.x86_64.rpm" # Куда складываю локально
-            mode: '0664' # С какими правами складываю
-        - name: Install package
-          ansible.builtin.yum: # Использую модуль yum, менеджер пакетов
-            name:
-              - "{{ ansible_user_dir }}/vector-{{ vector_version }}-1.x86_64.rpm" # Устанавливаю Vector из скаченного ранее файла
-          notify: Restart Vector service # Прошу запустить обработчик событий с этим названием
-      when:
-        - ansible_facts['distribution'] == "CentOS" # Только для CentOs
-        - is_installed is failed # Если установки не было
-      tags:
-        - vector
+        - clickhouse # Название тега
+    - name: Start clickhouse service # Наименование задачи
+      become: true # Повышаем привилегию для задачи
+      ansible.builtin.systemd: # Использую модуль systemd для запуска сервиса clickhouse-server
+        name: clickhouse-server # Имя сервиса
+        state: started # Запуск сервиса
+        daemon_reload: true # Перезагрузка конфигурации диспетчера systemd, иначе он не увидит сервиса clickhouse-server
+      check_mode: false
+      ignore_errors: "{{ ansible_check_mode }}"
+      tags: # Тэги
+        - clickhouse # Название тега
+    - name: Create database # Наименование задачи
+      ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
+      register: create_db # регистрируем результат
+      failed_when: create_db.rc != 0 and create_db.rc !=82 # условия, при которых задача завершается с ошибкой
+      changed_when: create_db.rc == 0 # условия при которых задача считается измененной
+      tags: # Тэги
+        - clickhouse # Название тега
