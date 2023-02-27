@@ -15,8 +15,41 @@
         msg: "echo 234"
 - name: Install Lighthouse
   hosts: lighthouse
-  gather_facts: False
+  #gather_facts: False
   tasks:
     - name: Debug
       debug:
         msg: "echo 345"
+#    - name: Install git
+#      become: true
+#      ansible.builtin.yum:
+#        name: git
+#        state: present
+    - name: Install nginx
+      become: true
+      ansible.builtin.yum:
+        name: nginx
+        state: present
+    - name: Clean directory
+      ansible.builtin.file:
+        path: /usr/share/nginx/html/
+        #path: /var/www/html/*.html
+        state: absent
+    - name: Start nginx service
+      become: true
+      ansible.builtin.systemd:
+        name: nginx
+        state: started
+        daemon_reload: true
+    - name: Clone lighthouse
+      become: true
+      ansible.builtin.git:
+        repo: 'https://github.com/VKCOM/lighthouse.git'
+        version: master
+        dest: /usr/share/nginx/html/
+        #dest: /var/www/html/
+    - name: Reload nginx service
+      become: true
+      ansible.builtin.systemd:
+        name: nginx
+        state: reloaded

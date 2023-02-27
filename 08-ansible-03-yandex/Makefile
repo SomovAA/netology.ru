@@ -10,5 +10,8 @@ docker-down-clear:
 ansible-playbook-test:
 	ansible-playbook -i ./playbook/inventory/test ./playbook/site.yml
 
+ansible-playbook-prod:
+	ansible-playbook -i ./playbook/inventory/prod ./playbook/site.yml
+
 ansible-lint:
 	ansible-lint ./playbook/site.yml -v

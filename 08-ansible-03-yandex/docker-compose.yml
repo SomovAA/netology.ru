@@ -14,5 +14,7 @@ services:
   lighthouse-01:
     image: pycontribs/centos:7
     container_name: lighthouse-01
-    #    privileged: true
+    privileged: true
     entrypoint: [ "/usr/sbin/init" ]
+    ports:
+      - "8080:80"
