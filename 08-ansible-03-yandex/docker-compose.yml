@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  vector-01:
+    image: pycontribs/centos:7
+    container_name: vector-01
+#    privileged: true
+    entrypoint: [ "/usr/sbin/init" ]
+  clickhouse-01:
+    image: pycontribs/centos:7
+    container_name: clickhouse-01
+    #    privileged: true
+    entrypoint: [ "/usr/sbin/init" ]
+  lighthouse-01:
+    image: pycontribs/centos:7
+    container_name: lighthouse-01
+    #    privileged: true
+    entrypoint: [ "/usr/sbin/init" ]

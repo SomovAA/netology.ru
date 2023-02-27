@@ -1,0 +1,22 @@
+---
+- name: Install Vector
+  hosts: vector
+  gather_facts: False
+  tasks:
+    - name: Debug
+      debug:
+        msg: "echo 123"
+- name: Install Clickhouse
+  hosts: clickhouse
+  gather_facts: False
+  tasks:
+    - name: Debug
+      debug:
+        msg: "echo 234"
+- name: Install Lighthouse
+  hosts: lighthouse
+  gather_facts: False
+  tasks:
+    - name: Debug
+      debug:
+        msg: "echo 345"
