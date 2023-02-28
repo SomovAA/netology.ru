@@ -1,40 +1,42 @@
 ---
 - name: Install Vector
   hosts: vector
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Debug
       debug:
         msg: "echo 123"
 - name: Install Clickhouse
   hosts: clickhouse
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Debug
       debug:
         msg: "echo 234"
 - name: Install Lighthouse
   hosts: lighthouse
-  #gather_facts: False
   tasks:
-    - name: Debug
-      debug:
-        msg: "echo 345"
-#    - name: Install git
-#      become: true
-#      ansible.builtin.yum:
-#        name: git
-#        state: present
+    - name: Install git
+      become: true
+      ansible.builtin.yum:
+        name: git
+        state: present
+    - name: Install EPEL repo
+      become: true
+      ansible.builtin.yum:
+        name: epel-release
+        state: present
     - name: Install nginx
       become: true
       ansible.builtin.yum:
         name: nginx
         state: present
     - name: Clean directory
+      become: true
       ansible.builtin.file:
         path: /usr/share/nginx/html/
-        #path: /var/www/html/*.html
         state: absent
+      changed_when: false
     - name: Start nginx service
       become: true
       ansible.builtin.systemd:
@@ -47,9 +49,10 @@
         repo: 'https://github.com/VKCOM/lighthouse.git'
         version: master
         dest: /usr/share/nginx/html/
-        #dest: /var/www/html/
+      changed_when: false
     - name: Reload nginx service
       become: true
       ansible.builtin.systemd:
         name: nginx
         state: reloaded
+      changed_when: false
