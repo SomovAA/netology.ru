@@ -1,18 +1,83 @@
 ---
 - name: Install Vector
   hosts: vector
-  gather_facts: false
   tasks:
-    - name: Debug
-      debug:
-        msg: "echo 123"
+    - name: Create a directory
+      ansible.builtin.file:
+        path: "{{ vector_dir }}"
+        state: directory
+        mode: '0755'
+      check_mode: false
+      tags:
+        - vector
+    - name: Download
+      ansible.builtin.get_url:
+        url: "https://packages.timber.io/vector/0.27.0/vector-0.27.0-1.{{ vector_arch }}.rpm"
+        dest: "{{ vector_dir }}/vector-0.27.0-1.{{ vector_arch }}.rpm"
+      check_mode: false
+      tags:
+        - vector
+    - name: Install package
+      become: true
+      ansible.builtin.yum:
+        name:
+          - "{{ vector_dir }}/vector-0.27.0-1.{{ vector_arch }}.rpm"
+      tags:
+        - vector
+    - name: Start vector service
+      become: true
+      ansible.builtin.systemd:
+        name: vector
+        state: started
+        daemon_reload: true
+      check_mode: false
+      ignore_errors: "{{ ansible_check_mode }}"
+      tags:
+        - vector
 - name: Install Clickhouse
   hosts: clickhouse
-  gather_facts: false
   tasks:
-    - name: Debug
-      debug:
-        msg: "echo 234"
+    - block:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/{{ item }}-{{ clickhouse_version }}.noarch.rpm"
+            dest: "./{{ item }}-{{ clickhouse_version }}.rpm"
+          with_items: "{{ clickhouse_packages }}"
+          check_mode: false
+      rescue:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/clickhouse-common-static-{{ clickhouse_version }}.x86_64.rpm"
+            dest: "./clickhouse-common-static-{{ clickhouse_version }}.rpm"
+          check_mode: false
+      tags:
+        - clickhouse
+    - name: Install clickhouse packages
+      become: true
+      ansible.builtin.yum:
+        name:
+          - clickhouse-common-static-{{ clickhouse_version }}.rpm
+          - clickhouse-client-{{ clickhouse_version }}.rpm
+          - clickhouse-server-{{ clickhouse_version }}.rpm
+      tags:
+        - clickhouse
+    - name: Start clickhouse service
+      become: true
+      ansible.builtin.systemd:
+        name: clickhouse-server
+        state: started
+        daemon_reload: true
+      check_mode: false
+      ignore_errors: "{{ ansible_check_mode }}"
+      tags:
+        - clickhouse
+    - name: Create database
+      ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
+      register: create_db
+      failed_when: create_db.rc != 0 and create_db.rc !=82
+      changed_when: create_db.rc == 0
+      tags:
+        - clickhouse
 - name: Install Lighthouse
   hosts: lighthouse
   tasks:
@@ -21,38 +86,55 @@
       ansible.builtin.yum:
         name: git
         state: present
+      tags:
+        - lighthouse
     - name: Install EPEL repo
       become: true
       ansible.builtin.yum:
         name: epel-release
         state: present
+      tags:
+        - lighthouse
     - name: Install nginx
       become: true
       ansible.builtin.yum:
         name: nginx
         state: present
+      tags:
+        - lighthouse
     - name: Clean directory
       become: true
       ansible.builtin.file:
-        path: /usr/share/nginx/html/
+        path: "{{ lighthouse_default_dir }}"
         state: absent
       changed_when: false
+      tags:
+        - lighthouse
     - name: Start nginx service
       become: true
       ansible.builtin.systemd:
         name: nginx
         state: started
         daemon_reload: true
+      check_mode: false
+      ignore_errors: "{{ ansible_check_mode }}"
+      tags:
+        - lighthouse
     - name: Clone lighthouse
       become: true
       ansible.builtin.git:
         repo: 'https://github.com/VKCOM/lighthouse.git'
         version: master
-        dest: /usr/share/nginx/html/
+        dest: "{{ lighthouse_default_dir }}"
       changed_when: false
+      tags:
+        - lighthouse
     - name: Reload nginx service
       become: true
       ansible.builtin.systemd:
         name: nginx
         state: reloaded
       changed_when: false
+      check_mode: false
+      tags:
+        - lighthouse
