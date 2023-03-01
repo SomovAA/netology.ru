@@ -99,3 +99,5 @@
 8.2. [x] [Работа с Playbook](08-ansible-02-playbook/README.md)
 
 8.3. [x] [Использование Yandex Cloud](08-ansible-03-yandex/README.md)
+
+8.4. [x] [Работа с Roles](08-ansible-04-role/README.md)
