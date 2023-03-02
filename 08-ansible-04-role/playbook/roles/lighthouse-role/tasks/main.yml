@@ -1,0 +1,29 @@
+---
+- name: Clean directory
+  become: true
+  ansible.builtin.file:
+    path: "{{ lighthouse_default_dir }}"
+    state: absent
+  changed_when: false
+  tags:
+    - lighthouse
+- name: Start nginx service
+  become: true
+  ansible.builtin.systemd:
+    name: nginx
+    state: started
+    daemon_reload: true
+  check_mode: false
+  ignore_errors: "{{ ansible_check_mode }}"
+  tags:
+    - lighthouse
+- name: Clone lighthouse
+  become: true
+  ansible.builtin.git:
+    repo: 'https://github.com/VKCOM/lighthouse.git'
+    version: master
+    dest: "{{ lighthouse_default_dir }}"
+  changed_when: false
+  tags:
+    - lighthouse
+  notify: Reload nginx service
