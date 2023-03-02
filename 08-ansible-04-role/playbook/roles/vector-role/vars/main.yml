@@ -1,2 +1,2 @@
 ---
-# vars file for vector-role
+vector_arch: "x86_64"
