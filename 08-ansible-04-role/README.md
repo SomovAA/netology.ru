@@ -37,10 +37,8 @@
 10. Выложите playbook в репозиторий.
 11. В ответе дайте ссылки на оба репозитория с roles и одну ссылку на репозиторий с playbook.
 
----
+## Решение
 
-### Как оформить решение задания
+Для удобной работы сделал [Makefile](Makefile).
 
-Выполненное домашнее задание пришлите в виде ссылки на .md-файл в вашем репозитории.
-
----
+[README.md](./playbook/README.md), [Playbook](./playbook/site.yml),  [requirements.yml](./playbook/requirements.yml).

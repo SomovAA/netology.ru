@@ -31,5 +31,17 @@ ansible-playbook-tags-lighthouse:
 ansible-playbook-tags-clickhouse:
 	ansible-playbook -i ./playbook/inventory/test ./playbook/site.yml --tags "clickhouse"
 
+ansible-playbook-tags-install:
+	ansible-playbook -i ./playbook/inventory/test ./playbook/site.yml --tags "install"
+
 ansible-lint:
-	ansible-lint ./playbook/site.yml -v
+	ansible-lint ./playbook/site.yml
+
+docker-exec-clickhouse-01-check-service:
+	docker exec -it clickhouse-01 sh -c 'systemctl status clickhouse-server'
+
+docker-exec-clickhouse-client-check:
+	docker exec -it clickhouse-01 sh -c "clickhouse-client -h 127.0.0.1 --port 9000 -q 'show databases'"
+
+docker-exec-vector-01-status-service:
+	docker exec -it vector-01 sh -c 'systemctl status vector'

@@ -1,11 +1,4 @@
 ---
-- name: Install Clickhouse
-  hosts: clickhouse
-  roles:
-    - role: clickhouse
-      vars:
-        - clickhouse_version: "22.3.3.44"
-      tags: clickhouse
 - name: Install Vector
   hosts: vector
   roles:
@@ -38,3 +31,14 @@
         - lighthouse
   roles:
     - lighthouse
+- name: Install Clickhouse
+  hosts: clickhouse
+  roles:
+    - role: clickhouse
+      vars:
+        - clickhouse_version: "22.3.3.44"
+        - clickhouse_networks_default:
+            - "127.0.0.1"
+        - clickhouse_listen_host_default:
+            - "127.0.0.1"
+      tags: clickhouse
