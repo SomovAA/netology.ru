@@ -1,14 +1,17 @@
 ---
-#- name: Install Vector
-#  hosts: vector
-#  vars:
-#    - vector_dir: "./vector_directory"
-#  roles:
-#    - vector-role
-#- name: Install Clickhouse
-#  hosts: clickhouse
-#  roles:
-#    - clickhouse
+- name: Install Clickhouse
+  hosts: clickhouse
+  roles:
+    - role: clickhouse
+      vars:
+        - clickhouse_version: "22.3.3.44"
+      tags: clickhouse
+- name: Install Vector
+  hosts: vector
+  roles:
+    - role: vector
+      vars:
+        vector_dir: "./vector_directory"
 - name: Install Lighthouse
   hosts: lighthouse
   pre_tasks:
@@ -34,4 +37,4 @@
       tags:
         - lighthouse
   roles:
-    - lighthouse-role
+    - lighthouse

@@ -1,19 +1,18 @@
 version: '3.1'
 
 services:
-#  clickhouse-01:
-    #image: pycontribs/centos:7
-#    image: debian:jessie-slim
-#    container_name: clickhouse-01
-#    privileged: true
-#    entrypoint: [ "/usr/sbin/init" ]
-#  vector-01:
-#    image: pycontribs/centos:7
-#    container_name: vector-01
-#    privileged: true
-#    entrypoint: [ "/usr/sbin/init" ]
+  clickhouse-01:
+    image: pycontribs/centos:7
+    container_name: clickhouse-01
+    privileged: true
+    command: "sleep 99999999"
+  vector-01:
+    image: pycontribs/centos:7
+    container_name: vector-01
+    privileged: true
+    entrypoint: [ "/usr/sbin/init" ]
   lighthouse-01:
     image: pycontribs/centos:7
     container_name: lighthouse-01
-#    privileged: true
+    privileged: true
     entrypoint: [ "/usr/sbin/init" ]
