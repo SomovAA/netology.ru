@@ -101,3 +101,5 @@
 8.3. [x] [Использование Yandex Cloud](08-ansible-03-yandex/README.md)
 
 8.4. [x] [Работа с Roles](08-ansible-04-role/README.md)
+
+8.5. [x] [Тестирование Roles](08-ansible-05-testing/README.md)
