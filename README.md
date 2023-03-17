@@ -103,3 +103,9 @@
 8.4. [x] [Работа с Roles](08-ansible-04-role/README.md)
 
 8.5. [x] [Тестирование Roles](08-ansible-05-testing/README.md)
+
+8.6. [x] [Создание собственных модулей](08-ansible-06-module/README.md)
+
+## Дополнительные материалы к лекциям
+
+1. [x] [Дополнительные материалы к лекциям по Ansible](08-ansible-additional/README.md).
