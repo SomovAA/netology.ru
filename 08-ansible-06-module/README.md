@@ -199,8 +199,111 @@ if __name__ == '__main__':
 
 ---
 
-### Как оформить решение задания
 
-Выполненное домашнее задание пришлите в виде ссылки на .md-файл в вашем репозитории.
+## Решение
 
+### Ссылки:
+- Репозиторий с реализацией коллекции https://github.com/SomovAA/ansible-collection-files
+- Архив коллекции [somovaa-files-1.0.0.tar.gz](./playbook/somovaa-files-1.0.0.tar.gz)
+
+Проверка работоспособности модуля в режиме venv
+```
+ansible$ ansible -m create_file_by_content -a "path=/tmp/1.txt content=test4" localhost
+[WARNING]: You are running the development version of Ansible. You should only run Ansible from "devel" if you are modifying the Ansible engine, or trying out features under development. This is a rapidly changing source
+of code and can become unstable at any point.
+localhost | CHANGED => {
+    "changed": true
+}
+(venv)
+```
+
+Проверка идемпотентности модуля в режиме venv
+```
+ansible$ ansible -m create_file_by_content -a "path=/tmp/1.txt content=test4" localhost
+[WARNING]: You are running the development version of Ansible. You should only run Ansible from "devel" if you are modifying the Ansible engine, or trying out features under development. This is a rapidly changing source
+of code and can become unstable at any point.
+localhost | SUCCESS => {
+    "changed": false
+}
+(venv) 
+```
+
+Проверка работоспособности playbook-а site.yml в режиме venv
+```yaml
 ---
+- name: Create file by content
+  hosts: localhost
+  tasks:
+    - name: Create file by content
+      ansible.builtin.create_file_by_content:
+        path: "/tmp/1.txt"
+        content: "test10"
+```
+```
+ansible$ ansible-playbook site.yml 
+[WARNING]: You are running the development version of Ansible. You should only run Ansible from "devel" if you are modifying the Ansible engine, or trying out features under development. This is a rapidly changing source
+of code and can become unstable at any point.
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Create file by content] *************************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ********************************************************************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Create file by content] *************************************************************************************************************************************************************************************************
+changed: [localhost]
+
+PLAY RECAP ********************************************************************************************************************************************************************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+(venv) 
+```
+
+Проверка идемпотентности playbook-а site.yml в режиме venv
+
+```
+ansible$ ansible-playbook site.yml 
+[WARNING]: You are running the development version of Ansible. You should only run Ansible from "devel" if you are modifying the Ansible engine, or trying out features under development. This is a rapidly changing source
+of code and can become unstable at any point.
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Create file by content] *************************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ********************************************************************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Create file by content] *************************************************************************************************************************************************************************************************
+ok: [localhost]
+
+PLAY RECAP ********************************************************************************************************************************************************************************************************************
+localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+(venv) 
+```
+
+Установка коллекции из архива
+```
+playbook$ ansible-galaxy collection install somovaa-files-1.0.0.tar.gz 
+Starting galaxy collection install process
+Process install dependency map
+Starting collection install process
+Installing 'somovaa.files:1.0.0' to '/home/somov/.ansible/collections/ansible_collections/somovaa/files'
+somovaa.files:1.0.0 was installed successfully
+```
+
+Проверка работоспособности, установленной из архива, коллекции
+```
+playbook$ ansible-playbook site.yml
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Create file by content] *************************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ********************************************************************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [somovaa.files.create_file_by_content : Create file by content] **********************************************************************************************************************************************************
+changed: [localhost]
+
+PLAY RECAP ********************************************************************************************************************************************************************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+```

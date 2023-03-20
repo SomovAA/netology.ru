@@ -1,0 +1,8 @@
+---
+- name: Create file by content
+  hosts: localhost
+  roles:
+    - role: somovaa.files.create_file_by_content
+      vars:
+        path: "/tmp/5.txt"
+        content: "test10"
