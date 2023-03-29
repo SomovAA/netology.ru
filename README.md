@@ -115,3 +115,5 @@
 9.1 [x] [Жизненный цикл ПО](09-ci-01-intro/README.md).
 
 9.3 [x] [Процессы CI/CD](09-ci-03-cicd/README.md).
+
+9.4 [x] [Jenkins](09-ci-04-jenkins/README.md).
