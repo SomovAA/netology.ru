@@ -4,18 +4,34 @@ services:
   sonar-01:
     image: pycontribs/centos:7
     container_name: sonar-01
+    build: .
     command: /usr/sbin/init
-    #    capabilities:
-    #      - SYS_ADMIN
-    ##    privileged: true
-    #    tmpfs:
-    #      - /run
-    #      - /tmp
-    #    volumes:
-    #      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    cap_add:
+      - SYS_ADMIN
+    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
 #    ports:
-#      - "8080:80"
+#      - "9000:9000"
+#      - "5432:5432"
+    ports:
+      - "9001:9000"
+      - "9092:9092"
   nexus-01:
     image: pycontribs/centos:7
     container_name: nexus-01
+    build: .
     command: /usr/sbin/init
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    ports:
+      - "8081:8081"
