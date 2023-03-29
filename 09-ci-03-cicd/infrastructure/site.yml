@@ -78,18 +78,15 @@
       user:
         name: "{{ sonarqube_db_user }}"
     - name: Create user for Sonar in PostgreSQL
-      become: true
       become_user: postgres
       command: "createuser -s -e {{ sonarqube_db_user }}"
       failed_when: false
 
     - name: Change password for Sonar user in PostgreSQL
-      become: true
       become_user: postgres
       command: "psql -c \"ALTER USER sonar WITH ENCRYPTED password '{{ sonarqube_db_password }}';\""
 
     - name: Create Sonar DB
-      become: true
       become_user: postgres
       command: "createdb {{ sonarqube_db_name }}"
       failed_when: false
@@ -130,29 +127,18 @@
         line: '%{{ sonarqube_db_user }} ALL=(ALL) NOPASSWD: ALL'
         validate: 'visudo -cf %s'
 
-#    - name: Increase Virtual Memory
-#      copy:
-#        src: sysctl.conf
-#        dest: /etc/sysctl.d/sysctl.conf
-#        mode: 0644
-#        owner: root
-#        group: root
-
-#    - name: Increase Virtual Memory
-#      lineinfile:
-#        dest: /etc/sysctl.conf
-#        state: present
-#        regexp: '^vm.max_map_count'
-#        line: 'vm.max_map_count=262144'
-#    - name: Reboot VM
-#      reboot:
-#    - name: Change max_map_count without reboot
-#      become: true
-#      command: "sysctl -p /etc/sysctl.d/sysctl.conf"
+    - name: Increase Virtual Memory
+      lineinfile:
+        dest: /etc/sysctl.conf
+        state: present
+        regexp: '^vm.max_map_count'
+        line: 'vm.max_map_count=262144'
+    - name: Reboot VM
+      reboot:
 
 - name: Get Sonarqube installed
   hosts: sonarqube
-  vars:
+  vars: 
     ansible_user: "{{ sonarqube_db_user }}"
   tasks:
     - name: Get distrib ZIP
@@ -194,7 +180,7 @@
           line: "sonar.jdbc.url=jdbc:postgresql://localhost:{{ sonar_db_port }}/{{ sonarqube_db_name }}?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useConfigs=maxPerformance"
         - regexp: "^sonar.web.context"
           line: "sonar.web.context={{ sonar_web_context }}"
-
+    
     - name: Generate wrapper.conf
       template:
         src: wrapper.conf.j2
@@ -220,21 +206,16 @@
 
     - name: Ensure Sonar is running and set to start on boot.
       become: true
-#      service:
-#        name: sonar
-#        state: restarted
-#        enabled: true
-      ansible.builtin.systemd:
+      service:
         name: sonar
         state: restarted
-        daemon_reload: true
         enabled: true
 
-#    - name: Allow Sonar time to build on first start.
-#      pause:
-#        seconds: 120
-#      when: sonar_symlink.changed
-#      tags: ['skip_ansible_lint']
+    - name: Allow Sonar time to build on first start.
+      pause:
+        seconds: 180
+      when: sonar_symlink.changed
+      tags: ['skip_ansible_lint']
 
     - name: Make sure Sonar is responding on the configured port.
       wait_for:
@@ -371,15 +352,10 @@
 
     - name: Start Nexus service if enabled
       become: true
-#      service:
-#        enabled: yes
-#        name: nexus
-#        state: started
-      ansible.builtin.systemd:
+      service:
+        enabled: yes
         name: nexus
         state: started
-        daemon_reload: true
-        enabled: true
       when:
         - nexus_service_start_on_boot
         - not nexus_config_changed.changed
@@ -388,13 +364,9 @@
 
     - name: Ensure Nexus service is restarted
       become: true
-#      service:
-#        name: nexus
-#        state: restarted
-      ansible.builtin.systemd:
+      service:
         name: nexus
         state: restarted
-        daemon_reload: true
       when:
         - nexus_service_start_on_boot
         - nexus_config_changed.changed
