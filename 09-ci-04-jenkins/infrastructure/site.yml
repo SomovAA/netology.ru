@@ -65,6 +65,7 @@
       when: jenkins_installed is changed
 - name: Prepare jenkins agent
   hosts: jenkins_agents
+#  gather_facts: false
   become: true
   become_user: "{{ jenkins_user_name }}"
   tasks:
@@ -80,6 +81,7 @@
         state: directory
         owner: "{{ jenkins_user_name }}"
         group: "{{ jenkins_user_group }}"
+        mode: '0777'
     - name: Add docker repo
       become_user: root
       get_url:
@@ -109,6 +111,18 @@
         name:
           - selinux
           - ansible<3.0
+        state: present
+    - name: Install Molecule
+      become_user: root
+      pip:
+        executable: pip3
+        name:
+          - molecule
+          - ansible-lint
+          - yamllint
+          - podman
+          - molecule-podman
+          - molecule-docker
         state: present
     - name: Reinstall Selinux
       become_user: root
