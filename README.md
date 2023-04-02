@@ -117,3 +117,5 @@
 9.3 [x] [Процессы CI/CD](09-ci-03-cicd/README.md).
 
 9.4 [x] [Jenkins](09-ci-04-jenkins/README.md).
+
+9.5 [x] [Teamcity](09-ci-05-teamcity/README.md).
