@@ -119,3 +119,5 @@
 9.4 [x] [Jenkins](09-ci-04-jenkins/README.md).
 
 9.5 [x] [Teamcity](09-ci-05-teamcity/README.md).
+
+9.6 [x] [GitLab](09-ci-06-gitlab/README.md).
