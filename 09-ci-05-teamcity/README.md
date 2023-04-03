@@ -32,3 +32,7 @@
 19. В ответе пришлите ссылку на репозиторий.
 
 ### Решение
+
+Ссыкла на fork репозиторий https://github.com/SomovAA/example-teamcity, в нём есть файл backup-а в директории https://github.com/SomovAA/example-teamcity/tree/master/backup (server settings, projects and builds configurations (including secure values), plugins) 
+
+Артефакты сборки [artifacts](Example_Teamcity_Build_11_artifacts.zip)
