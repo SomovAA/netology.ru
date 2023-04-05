@@ -62,3 +62,34 @@
 Автомазируйте работу тестировщика — пусть у вас будет отдельный конвейер, который автоматически поднимает контейнер и выполняет проверку, например, при помощи curl. На основе вывода будет приниматься решение об успешности прохождения тестирования.
 
 ---
+
+### Решение
+
+Сперва пытался развернуть инфраструктуру локально через докер, но из-за проблем с сертификатами, регистрация агента не проходит, 
+проблему решить не смог. [docker-compose.yml](docker-compose.yml)
+
+Далее воспользовался официальным сайтом gitlab, т.к. кубик мы не проходили, не стал делать через него.
+
+Сссылка на проект https://gitlab.com/somovAA/netology/, в нем можно найти всё необходимое.
+Проблему с версией не ниже 3.7 решить не смог, т.к. для этого требуется openssl обновить до версии 1.1, 
+но также ряд других нюансов учесть...В остальном всё сделано, и работает корректно.
+
+Результат тестировщиков
+```
+docker pull registry.gitlab.com/somovaa/netology/python-api.py:latest
+latest: Pulling from somovaa/netology/python-api.py
+
+2d473b07cdd5: Already exists 
+bd6fc80d3432: Pulling fs layer 
+57542a15eb33: Pulling fs layer 
+871f5d5eae54: Pulling fs layer 
+Digest: sha256:c7d9c82f4906bee51cb8c9df61efd8ed22ee6a2139b60a27245ec969b02b7ead
+Status: Downloaded newer image for registry.gitlab.com/somovaa/netology/python-api.py:latest
+registry.gitlab.com/somovaa/netology/python-api.py:latest
+
+docker run -p 5290:5290 -d registry.gitlab.com/somovaa/netology/python-api.py:latest
+5de0b2afccb507f4b6d7b083febc31071ca9bd5b59900b6c0353f49e2791a276
+
+curl localhost:5290/get_info
+{"version": 3, "method": "GET", "message": "Running"}
+```

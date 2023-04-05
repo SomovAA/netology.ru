@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    hostname: 127.0.0.1
+    container_name: gitlab
+    restart: unless-stopped
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://your-domain.net:443'
+        gitlab_rails['gitlab_shell_ssh_port'] = 22
+        gitlab_rails['initial_shared_runners_registration_token'] = "token"
+    ports:
+      - "443:443"
+      - "80:80"
+      - "22:22"
+    volumes:
+      - gitlab_config:/etc/gitlab
+      - gitlab_data:/var/opt/gitlab
+      - gitlab_logs:/var/log/gitlab
+      - ./ssl:/etc/gitlab/ssl
+    networks:
+      - gitlab_net
+
+  gitlab-runner:
+    image: gitlab/gitlab-runner:alpine
+    container_name: gitlab-runner
+    restart: unless-stopped
+    depends_on:
+      gitlab:
+        condition: service_started
+    volumes:
+      - gitlab_runner_config:/etc/gitlab-runner
+      - gitlab_runner_sock:/var/run/docker.sock
+      - ./ssl:/etc/gitlab-runner/certs
+    networks:
+      - gitlab_net
+
+networks:
+  gitlab_net:
+
+volumes:
+  gitlab_config:
+  gitlab_logs:
+  gitlab_data:
+  gitlab_opt:
+  gitlab_runner_config:
+  gitlab_runner_sock:
