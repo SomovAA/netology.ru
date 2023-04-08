@@ -26,6 +26,8 @@
 1. Подключите поднятый вами prometheus, как источник данных.
 1. Решение домашнего задания — скриншот веб-интерфейса grafana со списком подключенных Datasource.
 
+![grafana](src/1.png)
+
 ## Задание 2
 
 Изучите самостоятельно ресурсы:
@@ -37,11 +39,31 @@
 Создайте Dashboard и в ней создайте Panels:
 
 - утилизация CPU для nodeexporter (в процентах, 100-idle);
+```
+100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)
+```
 - CPULA 1/5/15;
+```
+avg by (mode, instance) (rate(node_cpu_seconds_total[1m]))
+avg by (mode, instance) (rate(node_cpu_seconds_total[5m]))
+avg by (mode, instance) (rate(node_cpu_seconds_total[15m]))
+```
 - количество свободной оперативной памяти;
+```
+node_memory_MemFree_bytes
+```
 - количество места на файловой системе.
+```
+node_filesystem_size_bytes
+```
 
 Для решения этого задания приведите promql-запросы для выдачи этих метрик, а также скриншот получившейся Dashboard.
+
+```
+Удобно воспользоваться списком доступных метрик у prometheus http://localhost:9090/metrics
+Удобно воспользоваться списком доступных метрик у node exporter http://localhost:9100/metrics
+```
+![grafana](src/2.png)
 
 ## Задание 3
 
