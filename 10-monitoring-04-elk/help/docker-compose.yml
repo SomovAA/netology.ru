@@ -82,6 +82,8 @@ services:
     container_name: filebeat
     privileged: true
     user: root
+    command: bash -c "chmod go-w /usr/share/filebeat/filebeat.yml && sleep 600"
+    #      - "sh -c 'chmod go-w /usr/share/filebeat/filebeat.yml'"
     volumes:
       - ./configs/filebeat.yml:/usr/share/filebeat/filebeat.yml:Z
       - /var/lib/docker:/var/lib/docker:Z

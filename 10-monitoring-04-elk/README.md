@@ -44,6 +44,21 @@ Filebeat следует сконфигурировать для отправки
 - docker-compose манифест (если вы не использовали директорию help);
 - ваши yml-конфигурации для стека (если вы не использовали директорию help).
 
+```
+$ docker ps
+CONTAINER ID   IMAGE                                                  COMMAND                  CREATED          STATUS          PORTS                                        NAMES
+6eb47e7206e3   docker.elastic.co/elasticsearch/elasticsearch:7.11.0   "/bin/tini -- /usr/l…"   12 minutes ago   Up 12 minutes   0.0.0.0:9200->9200/tcp, 9300/tcp             es-hot
+7360d9455952   docker.elastic.co/elasticsearch/elasticsearch:7.11.0   "/bin/tini -- /usr/l…"   12 minutes ago   Up 12 minutes   9200/tcp, 9300/tcp                           es-warm
+e558398b47e9   docker.elastic.co/kibana/kibana:7.11.0                 "/bin/tini -- /usr/l…"   13 minutes ago   Up 13 minutes   0.0.0.0:5601->5601/tcp                       kibana
+165076c979f3   python:3.9-alpine                                      "python3 /opt/run.py"    13 minutes ago   Up 13 minutes                                                some_app
+f8d3adfae2f5   docker.elastic.co/logstash/logstash:6.3.2              "/usr/local/bin/dock…"   13 minutes ago   Up 13 minutes   5044/tcp, 9600/tcp, 0.0.0.0:5046->5046/tcp   logstash
+```
+
+![kibana](src/1.png)
+
+Также добавил ```command: "chmod go-w /usr/share/filebeat/filebeat.yml"```, иначе не работало из-за доступов, и 
+на рабочей машине сделал ```sudo sysctl -w vm.max_map_count=262144```, т.к. всеми возможными способами в контейнерах невозможно было поменять.
+
 ## Задание 2
 
 Перейдите в меню [создания index-patterns  в kibana](http://localhost:5601/app/management/kibana/indexPatterns/create) и создайте несколько index-patterns из имеющихся.
@@ -52,4 +67,14 @@ Filebeat следует сконфигурировать для отправки
 
 В манифесте директории help также приведенно dummy-приложение, которое генерирует рандомные события в stdout-контейнера.
 Эти логи должны порождать индекс logstash-* в elasticsearch. Если этого индекса нет — воспользуйтесь советами и источниками из раздела «Дополнительные ссылки» этого задания.
- 
+
+```
+Приложение передает логи строкой, а не json...так обычно не делают, а требуют от разрабочиков формата json с удобными для них ключами,
+т.к. они буду фильтрацию/поиск и производить по этим ключам.
+
+Перечитал статьи, перепробовал разные настройки, логи не отправляются...нужны советы
+Как проверять работу отдельно например filebeat, что он впитал и что выдал?
+Как проверять работу отдельно logstash и т.п. Т.е. как это можно тестировать ручками, и видеть результаты...
+а то проблема может быть вовсе не в настройках...перебирая разные их варианты можно придти в тупик и много времени потратить.
+Разве сервис filebeat не должен работать фоново, чтобы отправлять логи? У меня он отрабатывает раз и завершается успешно. Кто тогда логи отправлять будет?
+```
