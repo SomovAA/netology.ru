@@ -129,3 +129,5 @@
 10.2 [Средство визуализации Grafana](10-monitoring-03-grafana).
 
 10.3 [Система сбора логов Elastic Stack](10-monitoring-04-elk).
+
+10.4 [Платформа мониторинга Sentry](10-monitoring-05-sentry).
