@@ -131,3 +131,5 @@
 10.3 [Система сбора логов Elastic Stack](10-monitoring-04-elk).
 
 10.4 [Платформа мониторинга Sentry](10-monitoring-05-sentry).
+
+10.5 [Инцидент-менеджмент](10-monitoring-06-incident-management).
