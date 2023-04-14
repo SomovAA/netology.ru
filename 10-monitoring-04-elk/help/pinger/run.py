@@ -4,6 +4,7 @@ import logging
 import random
 import time
 
+# logging.basicConfig(format='{"name":"%(name)s","level":"%(levelname)s","message:"%(message)s"}')
 while True:
 
     number = random.randrange(0, 4)
