@@ -133,3 +133,7 @@
 10.4 [Платформа мониторинга Sentry](10-monitoring-05-sentry).
 
 10.5 [Инцидент-менеджмент](10-monitoring-06-incident-management).
+
+## Микросервисная архитектура
+
+11.1 [Введение в микросервисы](11-microservices-01-intro).
