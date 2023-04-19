@@ -7,7 +7,7 @@ docker-down:
 	docker-compose -f ./help/docker-compose.yml down
 
 docker-down-clear:
-	docker-compose -f ./help/docker-compose.yml down --volume
+	docker-compose -f ./help/docker-compose.yml down --volume --remove-orphans
 
 sysctl-w-max_map_count:
 	sudo -S sysctl -w vm.max_map_count=262144
@@ -26,3 +26,6 @@ filebeat:
 
 filebeat2:
 	docker exec -it filebeat sh -c 'chmod go-w /usr/share/filebeat/filebeat.yml'
+
+filebeat3:
+	docker run filebeat sh -c 'ls -la /usr/share/filebeat/data'

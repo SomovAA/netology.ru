@@ -1,6 +1,5 @@
 filebeat.inputs:
   - type: container
-    enabled: true
     paths:
       - '/var/lib/docker/containers/*/*.log'
 
@@ -14,16 +13,10 @@ processors:
       overwrite_keys: true
 
 output.logstash:
-  hosts: ["logstash:5046"]
-
-#output.elasticsearch:
-#  hosts: ["es-hot:9200"]
-#  indices:
-#    - index: "filebeat-%{[agent.version]}-%{+yyyy.MM.dd}"
-
-#output.console:
-#  enabled: true
-#  pretty: true
+  hosts: ["es-hot:9200"]
+#  hosts: [ "http://localhost:9200" ]
+  index: "logstash-%{[fields.log_type]}-%{[agent.version]}-%{+yyyy.MM.dd}"
+#  hosts: ["logstash:5046"]
 
 logging.json: true
 logging.metrics.enabled: false
