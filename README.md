@@ -139,3 +139,5 @@
 11.1 [Введение в микросервисы](11-microservices-01-intro).
 
 11.2 [Микросервисы: принципы](11-microservices-02-principles).
+
+11.2 [Микросервисы: подходы](11-microservices-03-approaches).
