@@ -140,4 +140,6 @@
 
 11.2 [Микросервисы: принципы](11-microservices-02-principles).
 
-11.2 [Микросервисы: подходы](11-microservices-03-approaches).
+11.3 [Микросервисы: подходы](11-microservices-03-approaches).
+
+11.4 [Микросервисы: масштабирование](11-microservices-04-scaling).
