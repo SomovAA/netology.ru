@@ -143,3 +143,8 @@
 11.3 [Микросервисы: подходы](11-microservices-03-approaches).
 
 11.4 [Микросервисы: масштабирование](11-microservices-04-scaling).
+
+## Kubernetes
+### Блок «Основы Kubernetes»
+
+12.1 [Kubernetes. Причины появления. Команда kubectl](12-kubernetes-01/README.md).
