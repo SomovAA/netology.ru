@@ -147,4 +147,6 @@
 ## Kubernetes
 ### Блок «Основы Kubernetes»
 
-12.1 [Kubernetes. Причины появления. Команда kubectl](12-kubernetes-01/README.md).
+12.1 [Kubernetes. Причины появления. Команда kubectl](12-kubernetes-01).
+
+12.2 [Базовые объекты K8S](12-kubernetes-02).
