@@ -11,4 +11,5 @@ spec:
       imagePullPolicy: IfNotPresent
       name: echoserver
       ports:
-        - containerPort: 80
+        - containerPort: 8080
+          name: http-web-svc

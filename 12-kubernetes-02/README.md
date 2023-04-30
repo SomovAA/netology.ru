@@ -27,6 +27,16 @@
 2. Использовать image - gcr.io/kubernetes-e2e-test-images/echoserver:2.2.
 3. Подключиться локально к Pod с помощью `kubectl port-forward` и вывести значение (curl или в браузере).
 
+#### Решение
+```
+$ kubectl apply -f ./src/pod.yml
+
+$ kubectl port-forward netology-web 37073:8080
+```
+
+Файл манифеста [pod](src/pod.yml)
+
+![pod](src/1.png)
 ------
 
 ### Задание 2. Создать Service и подключить его к Pod
@@ -36,6 +46,16 @@
 3. Создать Service с именем netology-svc и подключить к netology-web.
 4. Подключиться локально к Service с помощью `kubectl port-forward` и вывести значение (curl или в браузере).
 
+#### Решение
+```
+$ kubectl apply -f ./src/service.yml
+
+$ kubectl port-forward svc/netology-svc 36307:80
+```
+
+Файл манифеста [service](src/service.yml)
+
+![service](src/2.png)
 ------
 
 ### Правила приёма работы
@@ -44,6 +64,19 @@
 2. Файл README.md должен содержать скриншоты вывода команд `kubectl get pods`, а также скриншот результата подключения.
 3. Репозиторий должен содержать файлы манифестов и ссылки на них в файле README.md.
 
+```
+$ kubectl get pods
+NAME           READY   STATUS    RESTARTS   AGE
+netology-web   1/1     Running   0          15m
+
+$ minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+```
 ------
 
 ### Критерии оценки
