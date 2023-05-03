@@ -24,7 +24,7 @@ kubectl-get-default-pods:
 	kubectl get pods
 
 kubectl-get-logs-pod:
-	kubectl logs pods/nginx-multitool-64bc5966c5-c2br8
+	kubectl logs pods/nginx-busybox-679f44cc79-lllts
 
 
 kubectl-apply-service1:
