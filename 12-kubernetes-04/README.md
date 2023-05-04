@@ -30,6 +30,25 @@
 4. Продемонстрировать доступ с помощью `curl` по доменному имени сервиса.
 5. Предоставить манифесты Deployment и Service в решении, а также скриншоты или вывод команды п.4.
 
+#### Решение
+- [Development](src/deployment.yml)
+- [Service](src/service.yml)
+- [Pod](src/pod.yml)
+```
+kubectl apply -f ./src/deployment.yml
+kubectl apply -f ./src/service.yml
+kubectl apply -f ./src/pod.yml
+
+kubectl exec -it netology-pod -- curl netology-svc:9001
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+...
+
+kubectl exec -it netology-pod -- curl netology-svc:9002
+WBITT Network MultiTool (with NGINX) - nginx-multitool-5f9cb85d96-2t7kh - 10.244.0.50 - HTTP: 8080 , HTTPS: 443 . (Formerly praqma/network-multitool)
+```
 ------
 
 ### Задание 2. Создать Service и обеспечить доступ к приложениям снаружи кластера
@@ -38,6 +57,24 @@
 2. Продемонстрировать доступ с помощью браузера или `curl` с локального компьютера.
 3. Предоставить манифест и Service в решении, а также скриншоты или вывод команды п.2.
 
+[Service](src/service2.yml)
+
+```
+kubectl apply -f ./src/service2.yml
+```
+
+Чтобы извне дернуть, нужно знать ip, для этого спрашиваем по какому url можно извне обратиться к сервису, а далее обращаемся через curl
+```
+$ minikube service netology-node-port --url
+http://192.168.67.2:30080
+
+$ curl http://192.168.67.2:30080
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+...
+```
 ------
 
 ### Правила приёма работы
