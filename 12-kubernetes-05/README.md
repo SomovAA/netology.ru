@@ -31,6 +31,39 @@
 4. Продемонстрировать, что приложения видят друг друга с помощью Service.
 5. Предоставить манифесты Deployment и Service в решении, а также скриншоты или вывод команды п.4.
 
+#### Решение
+
+frontend:
+- [Deployment](src/frontend/Deployment.yml)
+- [Service](src/frontend/Service.yml)
+
+backend:
+- [Deployment](src/backend/Deployment.yml)
+- [Service](src/backend/Service.yml)
+
+```
+$ kubectl apply -f ./src/frontend/Deployment.yml
+$ kubectl apply -f ./src/frontend/Service.yml
+
+$ kubectl apply -f ./src/backend/Deployment.yml
+$ kubectl apply -f ./src/backend/Service.yml
+
+$ kubectl get pods
+NAME                        READY   STATUS    RESTARTS   AGE
+backend-69fdc9f5fb-bj6nf    1/1     Running   0          111s
+backend-69fdc9f5fb-rmvl5    1/1     Running   0          111s
+backend-69fdc9f5fb-swgzs    1/1     Running   0          111s
+frontend-6bc548fcdb-hhpx9   1/1     Running   0          116s
+frontend-6bc548fcdb-rrfvh   1/1     Running   0          116s
+frontend-6bc548fcdb-t6bh2   1/1     Running   0          116s
+
+kubectl exec -it backend-69fdc9f5fb-bj6nf -- curl frontend:80
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+...
+```
 ------
 
 ### Задание 2. Создать Ingress и обеспечить доступ к приложениям снаружи кластера
@@ -39,6 +72,41 @@
 2. Создать Ingress, обеспечивающий доступ снаружи по IP-адресу кластера MicroK8S так, чтобы при запросе только по адресу открывался _frontend_ а при добавлении /api - _backend_.
 3. Продемонстрировать доступ с помощью браузера или `curl` с локального компьютера.
 4. Предоставить манифесты и скриншоты или вывод команды п.2.
+
+#### Решение
+В minikube Ingress-controller уже есть.
+
+[Ingress](src/Ingress.yml)
+
+```
+$ kubectl apply -f ./src/Ingress.yml
+
+$ curl localhost:80
+curl: (7) Failed to connect to localhost port 80: В соединении отказано
+```
+По localhost не хочет работать, как узнать внешний IP для ingress?
+Для nodePort была команда minikube service backend --url, а для ingress?
+
+```
+$ kubectl get ingress
+NAME         CLASS    HOSTS       ADDRESS   PORTS   AGE
+my-ingress   <none>   localhost             80      18m
+```
+ADDRESS - пустой, почему?
+
+Попробовал установку из https://kubernetes.github.io/ingress-nginx/deploy/
+
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.7.0/deploy/static/provider/cloud/deploy.yaml
+```
+
+Результат тот же.
+```
+kubectl get service ingress-nginx-controller --namespace=ingress-nginx
+NAME                       TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+ingress-nginx-controller   LoadBalancer   10.110.180.116   <pending>     80:30034/TCP,443:31023/TCP   19m
+```
+Для EXTERNAL-IP бесконечный pending
 
 ------
 
