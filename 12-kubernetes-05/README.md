@@ -86,7 +86,7 @@ $ kubectl apply -f ./src/Ingress.yml
 
 $ kubectl get ingress
 NAME         CLASS    HOSTS       ADDRESS        PORTS   AGE
-my-ingress   <none>   localhost   192.168.67.2   80      3m
+my-ingress   <none>   my-domain.com   192.168.67.2   80      3m
 
 $ kubectl describe ingress my-ingress
 Name:             my-ingress
