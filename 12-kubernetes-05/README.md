@@ -74,39 +74,52 @@ kubectl exec -it backend-69fdc9f5fb-bj6nf -- curl frontend:80
 4. Предоставить манифесты и скриншоты или вывод команды п.2.
 
 #### Решение
-В minikube Ingress-controller уже есть.
+В minikube Ingress-controller уже есть. Нужно включить.
+```
+minikube addons enable ingress
+```
 
 [Ingress](src/Ingress.yml)
 
 ```
 $ kubectl apply -f ./src/Ingress.yml
 
-$ curl localhost:80
-curl: (7) Failed to connect to localhost port 80: В соединении отказано
-```
-По localhost не хочет работать, как узнать внешний IP для ingress?
-Для nodePort была команда minikube service backend --url, а для ingress?
-
-```
 $ kubectl get ingress
-NAME         CLASS    HOSTS       ADDRESS   PORTS   AGE
-my-ingress   <none>   localhost             80      18m
-```
-ADDRESS - пустой, почему?
+NAME         CLASS    HOSTS       ADDRESS        PORTS   AGE
+my-ingress   <none>   localhost   192.168.67.2   80      3m
 
-Попробовал установку из https://kubernetes.github.io/ingress-nginx/deploy/
+$ kubectl describe ingress my-ingress
+Name:             my-ingress
+Labels:           <none>
+Namespace:        default
+Address:          192.168.67.2
+Ingress Class:    <none>
+Default backend:  <default>
+Rules:
+  Host        Path  Backends
+  ----        ----  --------
+  my-domain.com   
+              /      frontend:80 (10.244.0.93:80,10.244.0.94:80,10.244.0.95:80)
+              /api   backend:8080 (10.244.0.96:8080,10.244.0.97:8080,10.244.0.98:8080)
 
 ```
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.7.0/deploy/static/provider/cloud/deploy.yaml
+
+Далее прописываем в hosts
+```
+192.168.67.2 my-domain.com
 ```
 
-Результат тот же.
 ```
-kubectl get service ingress-nginx-controller --namespace=ingress-nginx
-NAME                       TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
-ingress-nginx-controller   LoadBalancer   10.110.180.116   <pending>     80:30034/TCP,443:31023/TCP   19m
+$ curl my-domain.com
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+...
+
+$ curl my-domain.com/api
+WBITT Network MultiTool (with NGINX) - backend-69fdc9f5fb-clj89 - 10.244.0.98 - HTTP: 8080 , HTTPS: 443 . (Formerly praqma/network-multitool)
 ```
-Для EXTERNAL-IP бесконечный pending
 
 ------
 

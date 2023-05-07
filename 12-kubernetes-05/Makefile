@@ -56,12 +56,15 @@ minikube-service-backend:
 minikube-service-frontend:
 	minikube service frontend --url
 
+minikube-service-ingress-nginx-controller:
+	minikube service ingress-nginx-controller --url --namespace=ingress-nginx
+
 
 kubectl-get-pods-ingress-nginx:
 	kubectl get pods --namespace=ingress-nginx
 
 kubectl-logs-ingress-nginx:
-	kubectl logs pods/ingress-nginx-controller-6bdb654777-mhkj2 --namespace=ingress-nginx
+	kubectl logs pods/ingress-nginx-admission-patch-qclpl --namespace=ingress-nginx
 
 
 
@@ -69,3 +72,5 @@ kubectl-logs-ingress-nginx:
 kubectl-get-service-ingress-nginx-controller:
 	kubectl get service ingress-nginx-controller --namespace=ingress-nginx
 
+kubectl-logs-service-ingress-nginx-controller:
+	kubectl logs service/ingress-nginx-controller --namespace=ingress-nginx
