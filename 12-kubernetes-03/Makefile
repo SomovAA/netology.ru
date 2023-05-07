@@ -14,7 +14,7 @@ kubectl-describe-deployment:
 	kubectl describe deployments nginx-multitool
 
 kubectl-logs-deployment:
-	kubectl logs deployments/nginx-multitool
+	kubectl logs deployments/nginx-busybox
 
 
 kubectl-get-all-pods:
@@ -24,7 +24,7 @@ kubectl-get-default-pods:
 	kubectl get pods
 
 kubectl-get-logs-pod:
-	kubectl logs pods/nginx-busybox-679f44cc79-lllts
+	kubectl logs pods/nginx-busybox-57994587bd-qhmx6
 
 
 kubectl-apply-service1:
@@ -90,3 +90,26 @@ kubectl-exec-pod1-curl-:
 
 kubectl-get-logs-pod-:
 	kubectl logs pods/nginx-busybox-576b9c7469-4t5nr
+
+
+
+up:
+	docker-compose up -d
+
+down:
+	docker-compose down
+
+build:
+	docker-compose build
+
+push:
+	docker-compose push
+
+pull:
+	docker-compose pull
+
+down-clear:
+	docker-compose down --volume --remove-orphans
+
+busybox-bash:
+	docker exec -it busybox sh

@@ -1,0 +1,9 @@
+version: '3.1'
+
+services:
+  busybox:
+    image: hitenok/busybox_netology:0.0.1
+    build:
+      context: docker/busybox
+    container_name: busybox
+    command: ['sh', 'init.sh']

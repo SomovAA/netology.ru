@@ -112,9 +112,9 @@ WBITT Network MultiTool (with NGINX) - nginx-multitool-5d6f4d4f8-gtstz - 10.244.
 ```
 $ kubectl apply -f ./src/deployment2.yml
 
-$ kubectl get pods
+kubectl get pods
 NAME                             READY   STATUS     RESTARTS   AGE
-nginx-busybox-9f47b88b9-t977v   0/1     Init:0/1   0          4s
+nginx-busybox-57994587bd-qhmx6   0/1     Init:0/1   0          111s
 ```
 
 [Service](src/service2.yml)
@@ -122,19 +122,14 @@ nginx-busybox-9f47b88b9-t977v   0/1     Init:0/1   0          4s
 ```
 $ kubectl apply -f ./src/service2.yml
 
-$ kubectl get pods
-NAME                             READY   STATUS     RESTARTS   AGE
-nginx-busybox-9f47b88b9-t977v   0/1     Init:0/1   0          47s
+kubectl get pods
+NAME                             READY   STATUS    RESTARTS   AGE
+nginx-busybox-57994587bd-qhmx6   1/1     Running   0          2m48s
 ```
 
-Написал скрипт для проверки через curl, но как его положить в init-контейнер, чтобы затем вызвать через конструкцию `command:`?
-[init.sh](src/init.sh)
-Ручками можно проверить, используя команду. Хочу такую конструкцию в манифесте.
-```
-until sh init.sh; do echo waiting for nginx-svc; sleep 3; done
-```
-
-Либо как вынуть логику из init.sh, и передать её until? Перепробовал разные варианты, не хватает компетенции, нужна ещё подсказка, чтобы добить задачу.
+Написал скрипт для проверки через curl, положил его в init-контейнер, чтобы затем вызвать через конструкцию `command: ['sh', 'init.sh']`
+- Ссылка на сборку в [hub.docker](https://hub.docker.com/layers/hitenok/busybox_netology/0.0.1/images/sha256-a4e3e33a44b6f0052525586c583a96968974a61f758d6e4a6af0f19fa1fe431f?context=repo)
+- [init.sh](docker/busybox/init.sh)
 
 ------
 
