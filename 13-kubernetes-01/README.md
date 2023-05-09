@@ -34,6 +34,29 @@
 4. Продемонстрировать, что multitool может читать файл, который периодоически обновляется.
 5. Предоставить манифесты Deployment в решении, а также скриншоты или вывод команды из п. 4.
 
+#### Решение
+
+[Deployment](src/Deployment.yml)
+
+```
+$ kubectl apply -f ./src/Deployment.yml
+
+$ kubectl get pods
+NAME                                 READY   STATUS    RESTARTS   AGE
+multitool-busybox-869cbd767d-6cbwq   2/2     Running   0          2m22s
+
+$ kubectl exec -it multitool-busybox-869cbd767d-6cbwq -- cat /input/success.txt
+Success!
+Success!
+
+$ kubectl exec -it multitool-busybox-869cbd767d-6cbwq -- cat /input/success.txt
+Success!
+Success!
+Success!
+Success!
+Success!
+Success!
+```
 ------
 
 ### Задание 2
@@ -46,6 +69,30 @@
 2. Обеспечить возможность чтения файла `/var/log/syslog` кластера MicroK8S.
 3. Продемонстрировать возможность чтения файла изнутри пода.
 4. Предоставить манифесты Deployment, а также скриншоты или вывод команды из п. 2.
+
+#### Решение
+
+[Deployment](src/Deployment2.yml)
+
+```
+$ kubectl apply -f ./src/Deployment2.yml
+
+$ kubectl get daemonset
+NAME        DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+multitool   1         1         0       1            0           <none>          6m25s
+
+$ kubectl get pods
+NAME              READY   STATUS              RESTARTS   AGE
+multitool-59qx6   0/1     ContainerCreating   0          6m46s
+```
+
+Логи нет возможности прочитать, т.к. статус ContainerCreating
+```
+kubectl logs multitool-59qx6
+Error from server (BadRequest): container "multitool" in pod "multitool-59qx6" is waiting to start: ContainerCreating
+```
+Я пробовал создавать отдельно лог файл с доступами 777, все равно под не стартуется...ощущение, что каких-то прав не хватает, 
+что нужно запускать контейнеры с особыми правами...нужен совет
 
 ------
 
