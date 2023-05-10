@@ -79,20 +79,23 @@ $ kubectl apply -f ./src/Deployment2.yml
 
 $ kubectl get daemonset
 NAME        DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
-multitool   1         1         0       1            0           <none>          6m25s
+multitool   1         1         1       1            1           <none>          29s
 
 $ kubectl get pods
-NAME              READY   STATUS              RESTARTS   AGE
-multitool-59qx6   0/1     ContainerCreating   0          6m46s
-```
+NAME              READY   STATUS    RESTARTS   AGE
+multitool-4hjpl   1/1     Running   0          68s
 
-Логи нет возможности прочитать, т.к. статус ContainerCreating
+$ kubectl exec -it multitool-4hjpl -- ls -la log
+drwxr-xr-x    5 root     root          4096 Apr 26 14:53 .
+drwxr-xr-x    1 root     root          4096 May 10 14:22 ..
+-rw-r--r--    1 root     root          2399 May 10 14:20 alternatives.log
+-rw-rw----    1 root     43               0 Apr  3 21:38 btmp
+drwxr-xr-x    2 root     root         12288 May 10 14:22 containers
+-rw-rw-r--    1 root     43          292292 Apr  3 21:38 lastlog
+drwxr-xr-x   13 root     root          4096 May 10 14:22 pods
+drwx------    2 root     root          4096 Apr  3 21:38 private
+...
 ```
-kubectl logs multitool-59qx6
-Error from server (BadRequest): container "multitool" in pod "multitool-59qx6" is waiting to start: ContainerCreating
-```
-Я пробовал создавать отдельно лог файл с доступами 777, все равно под не стартуется...ощущение, что каких-то прав не хватает, 
-что нужно запускать контейнеры с особыми правами...нужен совет
 
 ------
 

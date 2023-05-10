@@ -33,3 +33,6 @@ kubectl-apply-deployment2:
 
 kubectl-delete-deployment2:
 	kubectl delete -f ./src/Deployment2.yml
+
+kubectl-exec-pod-multitool-2:
+	kubectl exec -it multitool-4hjpl -- ls -la log

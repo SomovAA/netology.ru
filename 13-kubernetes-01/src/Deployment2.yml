@@ -18,10 +18,11 @@ spec:
           image: wbitt/network-multitool:latest
           volumeMounts:
             - name: log
-              mountPath: /test.log
+              mountPath: /log
       volumes:
         - name: log
           hostPath:
-            path: /var/log/syslog
+            path: /var/log
+#            path: /var/log/syslog
 #            path: /var/log/test.log
-            type: File
+#            type: File
