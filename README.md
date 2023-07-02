@@ -164,3 +164,5 @@
 ### Блок «Администрирование Kubernetes»
 
 14.1 [Компоненты Kubernetes](14-kubernetes-01).
+
+14.2 [Установка Kubernetes](14-kubernetes-02).
