@@ -166,3 +166,5 @@
 14.1 [Компоненты Kubernetes](14-kubernetes-01).
 
 14.2 [Установка Kubernetes](14-kubernetes-02).
+
+14.4 [Обновление приложений](14-kubernetes-04).
