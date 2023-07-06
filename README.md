@@ -168,3 +168,5 @@
 14.2 [Установка Kubernetes](14-kubernetes-02).
 
 14.4 [Обновление приложений](14-kubernetes-04).
+
+14.5 [Troubleshooting](14-kubernetes-05).
